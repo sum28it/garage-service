@@ -46,7 +46,7 @@ func GetTime(ctx context.Context) time.Time {
 }
 
 // Sets status in context
-func SetStatus(ctx context.Context, statusCode int) {
+func SetStatusCode(ctx context.Context, statusCode int) {
 	v, ok := ctx.Value(key).(*Values)
 	if !ok {
 		return
