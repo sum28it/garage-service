@@ -14,6 +14,8 @@ import (
 func Status(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	if n := rand.Intn(100); n%2 == 0 {
 		return v1Web.NewRequestError(errors.New("trusted error"), http.StatusBadRequest)
+		// 	return errors.New("ntrusted error")
+		// panic("Panicked")
 	}
 	status := struct {
 		Status string
