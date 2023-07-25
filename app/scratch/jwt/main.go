@@ -44,11 +44,11 @@ func run() error {
 
 	// =========================================================================
 	// Create a file for the public key information in PEM form.
-	publicFile, err := os.Create("public.pem")
-	if err != nil {
-		return fmt.Errorf("creating public file: %w", err)
-	}
-	defer publicFile.Close()
+	// publicFile, err := os.Create("public.pem")
+	// if err != nil {
+	// 	return fmt.Errorf("creating public file: %w", err)
+	// }
+	// defer publicFile.Close()
 
 	// Marshal the public key from the private key to PKIX.
 	asn1Bytes, err := x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
@@ -63,10 +63,10 @@ func run() error {
 	}
 
 	// Write the public key to the public key file.
-	if err := pem.Encode(publicFile, &publicBlock); err != nil {
+	if err := pem.Encode(os.Stdout, &publicBlock); err != nil {
 		return fmt.Errorf("encoding to public file: %w", err)
 	}
 
-	fmt.Println("private and public key files generated")
+	fmt.Println("=========================================================================")
 	return nil
 }
