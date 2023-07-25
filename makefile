@@ -1,6 +1,14 @@
 # Other commands to install
 # go install github.com/divam/expvarmon@latest
 
+# RSA Keys
+# 	To generate a private/public key PEM file.
+# 	$ openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048
+# 	$ openssl rsa -pubout -in private.pem -out public.pem
+
+jwt:
+	go run app/scratch/jwt/main.go
+
 run:
 	go run app\services\sales-api\main.go | go run app\tooling\logfmt\main.go
 
