@@ -13,6 +13,8 @@ import (
 
 	"github.com/ardanlabs/conf/v3"
 	"github.com/sum28it/garage-service/app/services/sales-api/handlers"
+	"github.com/sum28it/garage-service/business/web/auth"
+	"github.com/sum28it/garage-service/business/web/keystore"
 	"github.com/sum28it/garage-service/business/web/v1/debug"
 	"github.com/sum28it/garage-service/foundation/logger"
 	"go.uber.org/automaxprocs/maxprocs"
@@ -90,6 +92,26 @@ func run(log *zap.SugaredLogger) error {
 	log.Infow("startup", "config", out)
 
 	// =========================================================================
+	// Initialize authentication support
+
+	log.Infow("startup", "status", "initializing authentication support")
+
+	keyStore, err := keystore.New()
+	if err != nil {
+		return fmt.Errorf("constructing keystore: %w", err)
+	}
+
+	authCfg := auth.Config{
+		Log:       log,
+		KeyLookup: keyStore,
+	}
+
+	auth, err := auth.New(authCfg)
+	if err != nil {
+		return fmt.Errorf("constructing auth: %w", err)
+	}
+
+	// =========================================================================
 	// Start debug service
 	log.Infow("startup", "status", "debug v1 router started", "host", cfg.Web.DebugHost)
 	go func() {
@@ -107,6 +129,7 @@ func run(log *zap.SugaredLogger) error {
 	apiMux := handlers.APIMux(handlers.APIMuxConfig{
 		Shutdown: shutdown,
 		Log:      log,
+		Auth:     auth,
 	})
 
 	api := http.Server{

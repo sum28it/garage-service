@@ -8,7 +8,8 @@
 
 jwt:
 	go run app/scratch/jwt/main.go
-
+auth-local:
+	curl -il -H "Authorization: Bearer ${TOKEN}" localhost:3000/auth
 run:
 	go run app\services\sales-api\main.go | go run app\tooling\logfmt\main.go
 
