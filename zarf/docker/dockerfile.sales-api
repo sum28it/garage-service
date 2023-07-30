@@ -1,0 +1,24 @@
+# Build the Go Binary.
+FROM golang:1.19 as build_sales-api
+ENV CGO_ENABLED 0
+ARG BUILD_REF
+
+# Copy the source code into the container.
+COPY . /garage-service
+
+# Build the service binary.
+WORKDIR /garage-service/app/services/sales-api
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
+
+# Run the Go Binary in Alpine.
+FROM alpine:3.17
+ARG BUILD_DATE
+ARG BUILD_REF
+RUN addgroup -g 1000 -S sales && \
+    adduser -u 1000 -h /service -G sales -S sales
+COPY --from=build_sales-api --chown=sales:sales /garage-service/zarf/keys/. /garage-service/zarf/keys/.
+COPY --from=build_sales-api --chown=sales:sales /garage-service/app/services/sales-api/sales-api /garage-service/sales-api
+WORKDIR /garage-service
+USER sales
+CMD ["./sales-api"]
