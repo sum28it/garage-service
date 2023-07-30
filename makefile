@@ -67,7 +67,7 @@ dev-up:
 		--config zarf/k8s/dev/kind-config.yaml
 
 	kubectl wait --timeout=120s --namespace=local-path-storage --for=condition=Available deployment/local-path-provisioner
-
+	kind load docker-image $(POSTGRES) --name $(KIND_CLUSTER)
 
 dev-down:
 	kind delete cluster --name $(KIND_CLUSTER)
@@ -83,6 +83,8 @@ dev-load:
 	kind load docker-image sales-api:$(VERSION) --name $(KIND_CLUSTER)
 
 dev-apply:
+	kustomize build zarf/k8s/dev/database | kubectl apply -f -
+	kubectl wait --timeout=120s --namespace=sales-system --for=condition=Available deployment/database
 	kustomize build zarf/k8s/dev/sales | kubectl apply -f -
 	kubectl wait --timeout=120s --namespace=sales-system --for=condition=Available deployment/sales
 
@@ -92,6 +94,8 @@ dev-restart:
 dev-logs:
 	kubectl logs --namespace=sales-system -l app=sales --all-containers=true -f --tail=100 --max-log-requests=6 | go run app\tooling\logfmt\main.go --service=SALES-API
 
+dev-logs-db:
+	kubectl logs --namespace=sales-system -l app=database --all-containers=true -f --tail=100
 
 dev-describe:
 	kubectl describe nodes
