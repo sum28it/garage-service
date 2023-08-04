@@ -4,9 +4,11 @@ go 1.20
 
 require (
 	github.com/ardanlabs/conf/v3 v3.1.6
+	github.com/ardanlabs/darwin/v2 v2.0.0
 	github.com/dimfeld/httptreemux/v5 v5.5.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/open-policy-agent/opa v0.54.0
 	go.uber.org/automaxprocs v1.5.2
 	go.uber.org/zap v1.24.0
