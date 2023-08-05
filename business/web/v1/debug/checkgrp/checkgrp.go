@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 )
 
@@ -13,7 +14,7 @@ import (
 type Handlers struct {
 	Build string
 	Log   *zap.SugaredLogger
-	// DB    *sqlx.DB
+	DB    *sqlx.DB
 }
 
 // Readiness checks if the database is ready and if not will return a 500 status.
