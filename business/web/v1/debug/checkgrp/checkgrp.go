@@ -2,11 +2,14 @@
 package checkgrp
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sum28it/garage-service/business/sys/database"
 	"go.uber.org/zap"
 )
 
@@ -21,15 +24,15 @@ type Handlers struct {
 // Do not respond by just returning an error because further up in the call
 // stack it will interpret that as a non-trusted error.
 func (h Handlers) Readiness(w http.ResponseWriter, r *http.Request) {
-	// ctx, cancel := context.WithTimeout(r.Context(), time.Second)
-	// defer cancel()
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second)
+	defer cancel()
 
 	status := "ok"
 	statusCode := http.StatusOK
-	// if err := database.StatusCheck(ctx, h.DB); err != nil {
-	// 	status = "db not ready"
-	// 	statusCode = http.StatusInternalServerError
-	// }
+	if err := database.StatusCheck(ctx, h.DB); err != nil {
+		status = "db not ready"
+		statusCode = http.StatusInternalServerError
+	}
 
 	data := struct {
 		Status string `json:"status"`

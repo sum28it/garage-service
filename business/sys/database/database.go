@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	// Calls init function.
+	_ "github.com/lib/pq" // Calls init function.
 )
 
 // lib/pq errorCodeNames

@@ -107,9 +107,10 @@ func run(log *zap.SugaredLogger) error {
 	log.Infow("startup", "status", "initializing database support", "host", cfg.DB.Host)
 
 	db, err := database.Open(database.Config{
-		User:         cfg.DB.User,
-		Password:     cfg.DB.Password,
-		Host:         cfg.DB.Host,
+		User: cfg.DB.User,
+		// Connecting to a local instance of postgres
+		Password:     "super",
+		Host:         "localhost",
 		Name:         cfg.DB.Name,
 		MaxIdleConns: cfg.DB.MaxIdleConns,
 		MaxOpenConns: cfg.DB.MaxOpenConns,
