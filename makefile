@@ -61,7 +61,7 @@ dev-tel:
 	telepresence --context=kind-$(KIND_CLUSTER) helm install
 	telepresence --context=kind-$(KIND_CLUSTER) connect
 
-KIND_CLUSTER:=ardan-web-service-cluster
+KIND_CLUSTER:=garage-service-cluster
 
 dev-up:
 	kind create cluster \
