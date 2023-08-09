@@ -1,3 +1,4 @@
+// PAckage keystore is an in memory key database
 package keystore
 
 import (
