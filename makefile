@@ -6,6 +6,10 @@
 # 	$ openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048
 # 	$ openssl rsa -pubout -in private.pem -out public.pem
 
+# Running tests
+#	$ go test -coverprofile p.out
+#	$ go tool cover -html p.out
+
 db: 
 	go run app/scratch/db/main.go
 
@@ -28,6 +32,21 @@ metrics-view:
 
 test-load-local:
 	hey -m GET -c 100 -n 10000 http://localhost:3000/status
+
+
+test-token-local:
+	curl -il --user "admin@example.com:gophers" http://localhost:3000/users/token/54bb2165-71e1-41a6-af3e-7da4a0e1e2c1
+
+test-token:
+	curl -il --user "admin@example.com:gophers" http://sales-service.sales-system.svc.cluster.local:3000/users/token/54bb2165-71e1-41a6-af3e-7da4a0e1e2c1
+
+# export TOKEN="COPY TOKEN STRING FROM LAST CALL"
+
+test-users-local:
+	curl -il -H "Authorization: Bearer ${TOKEN}" http://localhost:3000/users/1/2
+
+test-users:
+	curl -il -H "Authorization: Bearer ${TOKEN}" http://sales-service.sales-system.svc.cluster.local:3000/users/1/2
 
 # ==============================================================================
 # Running tests within the local computer
