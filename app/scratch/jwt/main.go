@@ -126,7 +126,7 @@ func run() error {
 
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
 		switch token.Header["kid"] {
-		case "kid1":
+		case "54bb2165-71e1-41a6-af3e-7da4a0e1e2c1":
 			return &privateKey.PublicKey, nil
 		default:
 			return nil, errors.New("unknown key")
