@@ -92,8 +92,16 @@ To run the project outside a k8s cluster, you need to have PostgreSQL installed 
 
 ## Layers
 
+![Request Lifecycle image](.images/Request_Life_cycle.svg)
+
 - __App:__ This layer contains all the services and tools that are developed as a part of this project. The tooling directory contains the utility CLI tool that is built during the project. Scratch contains scripts for generating some quick objects and may not be needed in production environment.
 - __Business:__ The business layer is a set of packages that implement the core business logic of the application. The packages in this layer behave independent of the fact whether they are being used by a web app or a CLI app. The core layer provides APIs that are called directly by app layer to process user requests. The core layer accesses APIs from sys to perform database operations. The web layer provides auth, metrics and other middleware functionalities.
 - __Foundation:__ The foundation layer provides a micro web framework that is lightweight, compatible to standard library and extendable. The framework uses minimal dependencies and provides support for middlewares, response and handlers with context. It contains packages that can be used across different projects. It is decoupled from the business logic of the app and packages in this layer cannot access database and loggger.
 - __Vendor:__ This directory contains all the third party libraries imported by our application. Vendoring helps in making projects easy to clone and build. Although vendoring sometimes makes the IDE bit slow but the ability to browse the source code in the IDE feels good.
 - __Zarf:__ This layer contains the deployment configuration for Kubernetes, dockerfiles and keys for generating JWT.
+
+### Cluster Architecture
+
+![Cluster Architecture](./.images/Cluster_Architecture.svg)
+
+<!-- The application runs in a seperate namespace to avoid naming conflicts. Inside our cluster, we have two deployments for our service pod and database respectively. -->
