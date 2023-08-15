@@ -1,6 +1,6 @@
 # Garage-Service
 
-This project implements a garage service api that exposes endpoints for adding, buying and selling cars. The aim of this project is to build a backend service that is maintainable and extendable over period of time.
+This project implements a garage service api that exposes endpoints for adding, buying and selling cars. The aim of this project is to build a service that  can be taken to be the starting point for any web application and to be maintainable and extendable over period of time.
 
 ## Up & Running
 
@@ -104,4 +104,6 @@ To run the project outside a k8s cluster, you need to have PostgreSQL installed 
 
 ![Cluster Architecture](./.images/Cluster_Architecture.svg)
 
-<!-- The application runs in a seperate namespace to avoid naming conflicts. Inside our cluster, we have two deployments for our service pod and database respectively. -->
+The application runs in a seperate namespace to avoid naming conflicts. Inside our cluster, we have two deployments managing our service and database pods respectively. Sales-ervice and Datasbe-service are two services that expose the pods service and databse respectively to rest of the cluster. On our local machine, we have two ports opened up in the cluster to communicate between kind and localhost.
+
+__NOTE:__ Database is running in the cluster only for dev environment. In a production setup, the database will be running somewhere outside the cluster, possibly in it's own cluster.
